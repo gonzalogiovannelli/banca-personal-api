@@ -11,8 +11,10 @@ comprobás que funcionó.
 ## Antes de empezar
 
 - `secretos/.env` con `ENABLEBANKING_APP_ID`, y la clave privada en `secretos/enablebanking.pem`. Si
-  faltan, es la primera vez: guiá el alta de la aplicación en el panel de Enable Banking (ver README,
-  "Primera vez") y no sigas hasta que `python -m src.enablebanking app` responda.
+  faltan, es la primera vez: guiá al usuario por [docs/enable-banking.md](../../../docs/enable-banking.md)
+  **un paso por vez**, esperando que confirme cada uno, y no sigas hasta que
+  `python -m src.enablebanking app` responda. Si en el panel algo no coincide con el instructivo,
+  decíselo y buscá el equivalente con él; no inventes nombres de botones.
 - Leé [docs/aprendizajes.md](../../../docs/aprendizajes.md), sección "Autorizar".
 - En Windows, anteponé `PYTHONIOENCODING=utf-8` a los comandos.
 

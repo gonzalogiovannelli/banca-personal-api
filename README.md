@@ -1,4 +1,4 @@
-# banca-abierta-ia
+# banca-personal-api
 
 Conectá tus cuentas bancarias personales por open banking (PSD2), bajá los movimientos a un CSV en tu
 computadora y categorizalos solos: con reglas, con IA para lo que las reglas no resuelven, y aprendiendo
@@ -35,8 +35,9 @@ tu banco ──pull──> datos/volcados/<perfil>.json ──rebuild──> dat
 ## Primera vez
 
 1. **Python 3.10 o más nuevo**, y `pip install -r requirements.txt`.
-2. **Registrá una aplicación en el panel de Enable Banking**, con redirect URL `https://localhost/`. Te da
-   un Application ID y una clave privada `.pem`.
+2. **Dá de alta tu aplicación en Enable Banking** siguiendo el
+   [instructivo paso a paso](docs/enable-banking.md). Para tus propias cuentas no hace falta ser empresa:
+   incluye las páginas legales que te pide el registro, listas para publicar.
 3. Copiá `.env.example` a `secretos/.env` y completalo. Guardá la clave en `secretos/enablebanking.pem`.
 4. Copiá `config/perfiles.example.yml` a `config/perfiles.yml` y dejá tus bancos.
 5. Probá: `python -m src.enablebanking app` tiene que responder con los datos de tu aplicación.
@@ -80,6 +81,8 @@ Si cargás un movimiento a mano (un pago en efectivo, un ajuste), su `id` tiene 
 | Carpeta | Qué hay | ¿Va a git? |
 |---|---|---|
 | `src/` | El código | Sí |
+| `docs/` | El instructivo de Enable Banking y lo aprendido con bancos reales | Sí |
+| `legal/` | Plantillas de privacidad y términos para el registro en Enable Banking | Sí |
 | `reglas/` | Tus categorías, reglas y correcciones | Sí, si tu copia es privada |
 | `config/perfiles.yml` | Tus bancos | No |
 | `secretos/` | Credenciales y sesiones | **Nunca** |
