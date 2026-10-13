@@ -3,7 +3,7 @@
 #
 # categorias:          la lista de categorías válidas. La IA solo puede usar estas sin quedar marcada
 # alias:               variantes de un mismo nombre -> el nombre canónico (una contraparte, un nombre)
-# reglas_concepto:     regex sobre el concepto. Gana sobre todo lo demás
+# reglas_concepto:     regex sobre el concepto (en mayúsculas y SIN tildes: "comision", no "comisión"). Gana sobre todo lo demás
 # contraparte_exacta:  contraparte exacta -> categoría
 # keywords:            [palabra, contraparte_limpia, categoria]. ORDEN = PRIORIDAD: la primera que aparece gana
 # conflictos_aceptados: palabra -> por qué está bien que choque con otra regla

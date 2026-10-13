@@ -34,10 +34,13 @@ tu banco ──pull──> datos/volcados/<perfil>.json ──rebuild──> dat
 
 ## Primera vez
 
+0. **Tu copia, privada.** Usá el botón *Use this template* de GitHub y elegí **Private**. No hagas fork:
+   el fork de un repositorio público es público, y ahí terminarían tus reglas (los comercios y las
+   personas a las que les pagás).
 1. **Python 3.10 o más nuevo**, y `pip install -r requirements.txt`.
-2. **Dá de alta tu aplicación en Enable Banking** siguiendo el
-   [instructivo paso a paso](docs/enable-banking.md). Para tus propias cuentas no hace falta ser empresa:
-   incluye las páginas legales que te pide el registro, listas para publicar.
+2. **Da de alta tu aplicación en Enable Banking** siguiendo el
+   [instructivo paso a paso](docs/enable-banking.md). Para leer tus propias cuentas alcanza con el modo
+   restringido, y el instructivo trae las páginas legales que pide el registro, listas para publicar.
 3. Copiá `.env.example` a `secretos/.env` y completalo. Guardá la clave en `secretos/enablebanking.pem`.
 4. Copiá `config/perfiles.example.yml` a `config/perfiles.yml` y dejá tus bancos.
 5. Probá: `python -m src.enablebanking app` tiene que responder con los datos de tu aplicación.
@@ -70,8 +73,9 @@ Cada consentimiento dura 90 días: `python -m src.enablebanking estado` dice cu�
 ## El CSV
 
 `datos/movimientos.csv`, separado por comas y con punto decimal. Las columnas que tocás vos son dos:
-`categoria` y `aprender`. Todo lo demás lo escribe el sistema. Si lo abrís en una planilla en español,
-importalo indicando coma como separador y punto como decimal.
+`categoria` y `aprender`. Todo lo demás lo escribe el sistema. Se puede editar con Excel: si al guardar
+lo deja con punto y coma o con coma decimal, el sistema lo lee igual y en la próxima corrida lo vuelve a
+escribir en su formato.
 
 Si cargás un movimiento a mano (un pago en efectivo, un ajuste), su `id` tiene que empezar por
 `manual-`: así el sistema sabe que no viene del banco y nunca lo reemplaza.
@@ -88,8 +92,8 @@ Si cargás un movimiento a mano (un pago en efectivo, un ajuste), su `id` tiene 
 | `secretos/` | Credenciales y sesiones | **Nunca** |
 | `datos/` | Movimientos, volcados, saldos, copias de seguridad | **Nunca** |
 
-Si vas a versionar tus reglas, que tu repositorio sea **privado**: los nombres de los comercios y de las
-personas a las que les transferís dicen mucho de vos.
+Por eso tu copia tiene que ser **privada** (paso 0): los nombres de los comercios y de las personas a
+las que les transferís dicen mucho de vos.
 
 ## Licencia
 

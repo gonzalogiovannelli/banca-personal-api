@@ -10,8 +10,8 @@ comprobás que funcionó.
 
 ## Antes de empezar
 
-- `secretos/.env` con `ENABLEBANKING_APP_ID`, y la clave privada en `secretos/enablebanking.pem`. Si
-  faltan, es la primera vez: guiá al usuario por [docs/enable-banking.md](../../../docs/enable-banking.md)
+- Corré `python -m src.enablebanking app`: avisa si falta el Application ID o la clave (no leas
+  `secretos/`). Si faltan, es la primera vez: guiá al usuario por [docs/enable-banking.md](../../../docs/enable-banking.md)
   **un paso por vez**, esperando que confirme cada uno, y no sigas hasta que
   `python -m src.enablebanking app` responda. Si en el panel algo no coincide con el instructivo,
   decíselo y buscá el equivalente con él; no inventes nombres de botones.

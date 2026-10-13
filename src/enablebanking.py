@@ -118,7 +118,8 @@ def _falla_legible(r: requests.Response):
         pista = ("\nPista: los bancos que pasan por Redsys permiten unas 4 consultas por día y por "
                  "consentimiento. Esperá a mañana o renová el consentimiento (ver docs/aprendizajes.md).")
     elif r.status_code == 401:
-        pista = "\nPista: la sesión puede estar vencida o invalidada. Renová el consentimiento."
+        pista = ("\nPista: si falló `app`, el ENABLEBANKING_APP_ID no corresponde a la clave .pem. Si falló al "
+                 "bajar movimientos, la sesión está vencida o invalidada: renová el consentimiento.")
     raise SystemExit("Enable Banking respondió %d: %s%s" % (r.status_code, texto, pista))
 
 

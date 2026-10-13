@@ -217,7 +217,36 @@ try:
         movimientos.rebuild("demo-banco", True, pull("h2", "2026-09-01", [tx("2026-09-06", 1, "OTRA")]))
     comprobar("la marca REVISAR no se acumula", fila(concepto("KIOSCO"))["nota"].count("REVISAR") == 1)
 
+    de_cero()   # un banco que numera los movimientos por cuenta
+    movimientos.rebuild("demo-wise", True, pull("i1", "2026-09-01", [tx("2026-09-03", 10, "LUZ", "EUR 000001", ident="1"),
+                                                                 tx("2026-09-03", 20, "AGUA", "EUR 000002", ident="1")]))
+    comprobar("el mismo id en dos cuentas no pierde ningún movimiento", fila(concepto("AGUA")) is not None
+              and fila(concepto("LUZ")) is not None)
+
+    movimientos.escribir([])
+    filas = [{c: "" for c in movimientos.COLUMNAS} | {"id": "x1", "fuente": "Banco Demo", "cuenta": "EUR 000001",
+                                                     "fecha": "2026-09-20", "estado": "BOOK"}]
+    comprobar("una cuenta nueva baja todo su historial", movimientos.ventana_desde(filas, "Banco Demo", "EUR 000009") == "2000-01-01"
+              and movimientos.ventana_desde(filas, "Banco Demo", "EUR 000001") == "2026-09-12")
+    pv = TMP / "pv.json"
+    pv.write_text(json.dumps({"desde": "2026-09-12", "desde_por_cuenta": {"EUR 000001": "2026-09-12", "EUR 000009": "2000-01-01"},
+                              "cuentas": ["EUR 000001", "EUR 000009"],
+                              "transacciones": [tx("2026-09-21", 1, "NUEVO"), tx("2025-03-01", 5, "VIEJO NUEVA CUENTA", "EUR 000009")]}),
+                  encoding="utf-8")
+    movimientos.rebuild("demo-banco", True, pv)
+    comprobar("y el rebuild la carga entera", fila(concepto("VIEJO NUEVA CUENTA")) is not None)
+
     print("11. Otros")
+    ruta = movimientos.rutas.MOVIMIENTOS
+    texto = ruta.read_text(encoding="utf-8")
+    ruta.write_text(texto.replace(",", ";"), encoding="utf-8-sig")
+    try:
+        leido = len(movimientos.leer()) > 0
+    except SystemExit:
+        leido = False
+    comprobar("un CSV guardado por Excel (BOM y punto y coma) se lee", leido)
+    reglas = categorizar.cargar_reglas()
+    comprobar("la regla de concepto mira solo el concepto", categorizar.categorizar("Banco X", "COMISION MANTENIMIENTO", reglas, False)[0] == "Comisiones")
     comprobar("una coma decimal se lee bien", movimientos.num("-5,00") == -5.0 and movimientos.num("1.234,56") == 1234.56)
     dup = TMP / "perfiles-dup.yml"
     dup.write_text("perfiles:\n  a: {banco: X, pais: ES, fuente: Igual, id: hash}\n  b: {banco: Y, pais: ES, fuente: Igual, id: hash}\n",

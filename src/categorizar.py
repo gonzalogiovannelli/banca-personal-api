@@ -47,7 +47,7 @@ CABECERA_REGLAS = """# Reglas de categorización. Ver el README y src/categoriza
 #
 # categorias:          la lista de categorías válidas. La IA solo puede usar estas sin quedar marcada
 # alias:               variantes de un mismo nombre -> el nombre canónico (una contraparte, un nombre)
-# reglas_concepto:     regex sobre el concepto. Gana sobre todo lo demás
+# reglas_concepto:     regex sobre el concepto (en mayúsculas y SIN tildes: "comision", no "comisión"). Gana sobre todo lo demás
 # contraparte_exacta:  contraparte exacta -> categoría
 # keywords:            [palabra, contraparte_limpia, categoria]. ORDEN = PRIORIDAD: la primera que aparece gana
 # conflictos_aceptados: palabra -> por qué está bien que choque con otra regla
@@ -98,8 +98,9 @@ def categorizar(contraparte: str, concepto: str, reglas: dict, concepto_solo: bo
     texto = norm(concepto) if concepto_solo else norm(contraparte + " " + concepto)
     m = norm(contraparte)
 
-    for r in reglas["reglas_concepto"]:
-        if re.search(r["regex"], texto, re.IGNORECASE):
+    solo_concepto = norm(concepto)
+    for r in reglas["reglas_concepto"]:   # solo el concepto, en mayúsculas y sin tildes
+        if re.search(r["regex"], solo_concepto, re.IGNORECASE):
             return r["categoria"], 1.0, "regla-concepto", ""
 
     exactas = reglas["contraparte_exacta"]

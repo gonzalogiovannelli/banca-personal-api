@@ -46,8 +46,11 @@ def leer(path=None) -> list:
     path = path or rutas.MOVIMIENTOS
     if not path.exists():
         return []
-    with open(path, encoding="utf-8", newline="") as f:
-        lector = csv.DictReader(f)
+    # utf-8-sig y `;`: si lo abriste y guardaste con Excel, que graba con BOM y, en español, con punto y coma
+    with open(path, encoding="utf-8-sig", newline="") as f:
+        primera = f.readline()
+        f.seek(0)
+        lector = csv.DictReader(f, delimiter=";" if primera.count(";") > primera.count(",") else ",")
         if lector.fieldnames != COLUMNAS:
             sys.exit("Las columnas de %s no son las esperadas.\nEsperadas: %s\nEncontradas: %s"
                      % (path, COLUMNAS, lector.fieldnames))
@@ -149,14 +152,15 @@ def saldo_contable(balances: list):
 
 
 # --- pull: lo único que toca el banco ---
-def ventana_desde(filas: list, fuente: str) -> str:
+def ventana_desde(filas: list, fuente: str, cuenta: str | None = None) -> str:
     """Desde dónde pedir: (última fecha cargada de esa fuente - 8 días), sin pasar de hoy, y nunca después
     del pendiente más viejo que siga abierto (una retención de hotel puede durar semanas: si quedara fuera
     de la ventana, al confirmarse quedaría duplicado). Anclada al dato: si una corrida falló, la siguiente
-    cubre el hueco sola. Sin datos de la fuente: todo lo que dé el banco."""
+    cubre el hueco sola. Se calcula por cuenta: una cuenta nueva sin filas baja todo lo que dé el banco."""
     fechas, pendientes = [], []
     for r in filas:
-        if r["fuente"] != fuente or not r["fecha"] or r["id"].startswith("manual-"):
+        if (r["fuente"] != fuente or not r["fecha"] or r["id"].startswith("manual-")
+                or (cuenta is not None and r["cuenta"] != cuenta)):
             continue
         try:
             f = dt.date.fromisoformat(r["fecha"][:10])
@@ -180,15 +184,18 @@ def pull(perfil: str):
     banco = ((sess.get("aspsp") or {}).get("name") or "")
     if p["banco"].lower() not in banco.lower() and banco.lower() not in p["banco"].lower():
         sys.exit("La sesión de '%s' es de %r, no de %r. Renová el consentimiento." % (perfil, banco, p["banco"]))
-    desde = ventana_desde(leer(), p["fuente"])
-    print("Pull %s desde %s" % (p["fuente"], desde))
+    tabla = leer()
+    print("Pull %s" % p["fuente"])
     eb = EnableBanking()
-    out = {"perfil": perfil, "fuente": p["fuente"], "desde": desde,
+    out = {"perfil": perfil, "fuente": p["fuente"], "desde": "", "desde_por_cuenta": {},
            "bajado": dt.datetime.now().replace(microsecond=0).isoformat(),
            "cuentas": [], "saldos": {}, "transacciones": []}
     path = rutas.volcado(perfil)
     for ac in sess.get("accounts", []):
         cuenta = etiqueta_cuenta(ac)
+        desde = ventana_desde(tabla, p["fuente"], cuenta)
+        out["desde_por_cuenta"][cuenta] = desde
+        out["desde"] = min(out["desde"] or desde, desde)
         try:
             s = saldo_contable(eb.balances(ac["uid"]))
             if s is not None:
@@ -207,7 +214,7 @@ def pull(perfil: str):
             t["_cuenta"] = cuenta
         out["cuentas"].append(cuenta)
         out["transacciones"].extend(txs)
-        print("  %s: %d movimientos" % (cuenta, len(txs)))
+        print("  %s: %d movimientos desde %s" % (cuenta, len(txs), desde))
     rutas.escribir_atomico(path, json.dumps(out, ensure_ascii=False, indent=1))
     print("Volcado en %s. Ahora, sin tocar el banco: python -m src.movimientos rebuild %s" % (path, perfil))
 
@@ -245,7 +252,10 @@ def rebuild(perfil: str, write: bool = False, volcado_path=None) -> dict:
     if not path.exists():
         sys.exit("No hay volcado en %s. Corré primero: python -m src.movimientos pull %s" % (path, perfil))
     doc = json.loads(path.read_text(encoding="utf-8"))
-    desde = doc["desde"]
+    desde_cuenta = doc.get("desde_por_cuenta") or {}
+
+    def desde_de(cuenta):
+        return desde_cuenta.get(cuenta, doc["desde"])
     nativo = p["id"] == "nativo"
     avisos = []
 
@@ -256,17 +266,18 @@ def rebuild(perfil: str, write: bool = False, volcado_path=None) -> dict:
         if not fila["fecha"]:
             sin_fecha += 1
             continue
-        if fila["fecha"] < desde:
+        if fila["fecha"] < desde_de(fila["cuenta"]):
             continue
         id_banco = fila["id"] if nativo else ""
         if not id_banco:   # sin id del banco: hash del contenido
             sin_id += 1 if nativo else 0
             fila["id"] = id_por_contenido(tx, perfil)
-        vistos[fila["id"]] += 1
-        if vistos[fila["id"]] > 1:
+        clave = (fila["cuenta"], fila["id"])   # un banco puede numerar los movimientos por cuenta
+        vistos[clave] += 1
+        if vistos[clave] > 1:
             if id_banco:
-                continue   # el banco repitió el mismo id en el volcado
-            fila["id"] = "%s.%d" % (fila["id"], vistos[fila["id"]])   # dos cafés iguales el mismo día
+                continue   # el banco repitió el mismo id en la misma cuenta
+            fila["id"] = "%s.%d" % (fila["id"], vistos[clave])   # dos cafés iguales el mismo día
         nuevas.append(fila)
     if sin_fecha:
         avisos.append("%d movimientos del banco sin ninguna fecha: no se cargaron." % sin_fecha)
@@ -281,10 +292,11 @@ def rebuild(perfil: str, write: bool = False, volcado_path=None) -> dict:
         fechas = [f["fecha"] for f in nuevas if f["cuenta"] == c]
         if not fechas:
             continue
+        desde = desde_de(c)
         inicio[c] = desde
         # Si lo más viejo que vino está mucho después de lo pedido, el banco probablemente ya no llega
-        # tan atrás (en PSD2 lo habitual son unos 90 días): ese tramo se conserva en vez de borrarse. Un hueco chico es
-        # normal (días sin movimientos, o un movimiento que se reasentó un día después) y no cuenta.
+        # tan atrás (en PSD2 lo habitual son unos 90 días): ese tramo se conserva en vez de borrarse. Un
+        # hueco chico es normal (días sin movimientos, o un movimiento reasentado un día después).
         if desde != "2000-01-01" and min(fechas) > desde and _dias(min(fechas), desde) > VENTANA_DIAS:
             inicio[c] = min(fechas)
             avisos.append("%s: se pidió desde %s y lo más viejo que devolvió el banco es del %s. Lo "
@@ -302,7 +314,7 @@ def rebuild(perfil: str, write: bool = False, volcado_path=None) -> dict:
         # es justo lo que se espera que cambie
         if r["id"].startswith("manual-") or r["cuenta"] not in inicio:
             return False
-        return r["fecha"] >= inicio[r["cuenta"]] or (r["estado"] == "PDNG" and r["fecha"] >= desde)
+        return r["fecha"] >= inicio[r["cuenta"]] or (r["estado"] == "PDNG" and r["fecha"] >= desde_de(r["cuenta"]))
     conservadas = [r for r in propias if not en_ventana(r)]
     viejas = [r for r in propias if en_ventana(r)]
 
@@ -311,9 +323,9 @@ def rebuild(perfil: str, write: bool = False, volcado_path=None) -> dict:
     # de a pares en orden de distancia y no en el orden del volcado: si no, con dos cargos iguales (una
     # suscripción mensual) tu corrección podría quedar en el movimiento equivocado.
     pareja, usadas = {}, set()   # índice en nuevas -> índice en viejas
-    por_id = {r["id"]: i for i, r in enumerate(viejas)}
+    por_id = {(r["cuenta"], r["id"]): i for i, r in enumerate(viejas)}
     for j, f in enumerate(nuevas):
-        i = por_id.get(f["id"])
+        i = por_id.get((f["cuenta"], f["id"]))
         if i is not None and i not in usadas:
             pareja[j] = i
             usadas.add(i)

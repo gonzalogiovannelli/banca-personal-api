@@ -1,9 +1,13 @@
 # Instructivo: dar de alta Enable Banking para tus propias cuentas
 
 Enable Banking es el intermediario autorizado (PSD2) que conecta este repositorio con tu banco. Para
-usarlo registrás una "aplicación" a tu nombre. **Para leer tus propias cuentas no hace falta ser empresa
-ni pagar:** la aplicación queda en *modo restringido*, que solo puede leer las cuentas que vos mismo
-vinculaste.
+usarlo registrás una "aplicación" a tu nombre, que para tus propias cuentas queda en *modo restringido*:
+solo puede leer las cuentas que vos mismo vinculaste.
+
+**Ojo con cómo lo define Enable Banking:** su documentación describe el modo restringido como
+*"linking your own bank accounts for internal testing"*, o sea, pensado para probar. Leer tus propias
+cuentas de forma personal es lo que permite en la práctica, pero no es un servicio de uso personal
+declarado como tal. Si te importa la diferencia, preguntales.
 
 Todo esto se hace una sola vez.
 
@@ -29,9 +33,11 @@ En [`legal/`](../legal/) hay dos plantillas, `privacy.html` y `terms.html`. La f
 publicarlas es GitHub Pages:
 
 1. Creá un repositorio **público** nuevo en GitHub, por ejemplo `mis-paginas-legales`. Tiene que ser
-   otro repositorio: tu copia de este proyecto conviene que sea privada.
-2. Subí las dos plantillas, reemplazando en cada una `{{NOMBRE_APP}}`, `{{EMAIL}}` y `{{FECHA}}`.
-3. En el repositorio: **Settings → Pages → Branch: main → Save.** En un par de minutos quedan en
+   otro repositorio: tu copia de este proyecto es privada.
+2. Subí las dos plantillas **a la raíz** de ese repositorio, reemplazando en cada una `{{NOMBRE_APP}}`,
+   `{{EMAIL}}` y `{{FECHA}}`. El email queda publicado en una página pública: si preferís, usá un alias.
+3. En el repositorio: **Settings → Pages → Source: Deploy from a branch → Branch: main, carpeta / (root)
+   → Save.** En un par de minutos quedan en
    `https://<tu-usuario>.github.io/mis-paginas-legales/privacy.html` y `.../terms.html`.
 4. Abrí las dos URL en el navegador antes de seguir: tienen que cargar.
 
@@ -67,8 +73,10 @@ y aprobás.
 
 - **Seleccioná todas las cuentas que quieras leer** cuando el banco te las muestre. Una cuenta que no
   vinculás acá no la vas a poder leer después, y la sesión aparece con 0 cuentas.
-- Hacelo con **cada banco**. Si dos personas tienen cuenta en el mismo banco, cada una vincula la suya, y
-  cada vez **en una ventana de incógnito** (ver [aprendizajes](aprendizajes.md)).
+- Hacelo con **cada banco**.
+- **Si vas a leer también la cuenta de otra persona** (tu pareja, por ejemplo), que la vincule ella, con
+  su consentimiento, y **en una ventana de incógnito** si comparten banco (ver
+  [aprendizajes](aprendizajes.md)). Las plantillas legales ya contemplan ese caso.
 
 ## 5. Llevarlo a este repositorio
 
