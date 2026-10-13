@@ -1,0 +1,50 @@
+# Reglas de categorización. Ver el README y src/categorizar.py.
+# Esto es un EJEMPLO para arrancar: reemplazalo por tus categorías. Las reglas que aprendas se suman solas.
+#
+# categorias:          la lista de categorías válidas. La IA solo puede usar estas sin quedar marcada
+# alias:               variantes de un mismo nombre -> el nombre canónico (una contraparte, un nombre)
+# reglas_concepto:     regex sobre el concepto. Gana sobre todo lo demás
+# contraparte_exacta:  contraparte exacta -> categoría
+# keywords:            [palabra, contraparte_limpia, categoria]. ORDEN = PRIORIDAD: la primera que aparece gana
+# conflictos_aceptados: palabra -> por qué está bien que choque con otra regla
+
+categorias:
+  - Supermercado
+  - Restaurantes
+  - Transporte
+  - Suscripciones
+  - Vivienda
+  - Salud
+  - Viajes
+  - Ingresos
+  - Comisiones
+  - Efectivo
+  - Impuestos
+  - Transferencias propias
+
+alias:
+  ACME CONSULTING S.L.: Acme Consulting
+  ACME CONSULTING SL: Acme Consulting
+
+reglas_concepto:
+  - regex: "wise charges|fee-card|card fee|^comision"
+    categoria: Comisiones
+
+contraparte_exacta:
+  Acme Consulting: Ingresos
+  Cajero automático: Efectivo
+  Impuestos: Impuestos
+
+keywords:
+  - [MERCADONA, Mercadona, Supermercado]
+  - [LIDL, Lidl, Supermercado]
+  - [CARREFOUR, Carrefour, Supermercado]
+  - [RENFE, Renfe, Transporte]
+  - [UBER, Uber, Transporte]
+  - [NETFLIX, Netflix, Suscripciones]
+  - [SPOTIFY, Spotify, Suscripciones]
+  - [FARMACIA, Farmacia, Salud]
+  - [AIRBNB, Airbnb, Viajes]
+  - [REINTEGRO, Cajero automático, Efectivo]
+
+conflictos_aceptados: {}

@@ -1,0 +1,32 @@
+# Tus bancos. Copiá este archivo a config/perfiles.yml (que está en .gitignore) y dejá solo los tuyos.
+# Cada perfil es UN consentimiento: un banco y un titular. Dos personas en el mismo banco son dos perfiles.
+#
+#   banco:  el nombre exacto del banco en Enable Banking (lo da `python -m src.enablebanking bancos ES`)
+#   pais:   el país con el que el banco está dado de alta en Enable Banking (Wise, por ejemplo, va por BE)
+#   fuente: cómo se llama esta cuenta en la tabla de movimientos
+#   id:     nativo = el banco manda un identificador estable por movimiento (Wise)
+#           hash   = no lo manda (los bancos españoles que pasan por Redsys) y se calcula del contenido
+#   concepto_solo: true si el banco no manda la contraparte como campo y hay que leerla del concepto
+#                  (Redsys). Las reglas de categorización miran entonces solo el concepto.
+
+perfiles:
+  sabadell:
+    banco: Banco de Sabadell
+    pais: ES
+    fuente: Sabadell
+    id: hash
+    concepto_solo: true
+
+  bbva:
+    banco: BBVA
+    pais: ES
+    fuente: BBVA
+    id: hash
+    concepto_solo: true
+
+  wise:
+    banco: Wise
+    pais: BE
+    fuente: Wise
+    id: nativo
+    concepto_solo: false

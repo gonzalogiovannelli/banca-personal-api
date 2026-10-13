@@ -1,0 +1,171 @@
+{
+ "perfil": "demo-banco",
+ "fuente": "Banco Demo",
+ "desde": "2026-09-01",
+ "bajado": "2026-09-11T09:00:00",
+ "saldos": {
+  "EUR 000001": 2335.0
+ },
+ "transacciones": [
+  {
+   "booking_date": "2026-09-02",
+   "value_date": "2026-09-02",
+   "credit_debit_indicator": "DBIT",
+   "transaction_amount": {
+    "amount": "54.30",
+    "currency": "EUR"
+   },
+   "remittance_information": [
+    "COMPRA TARJ. 5402XXXXXXXX1234 MERCADONA AV PUERTO-VALENCIA"
+   ],
+   "status": "BOOK",
+   "creditor": null,
+   "debtor": null,
+   "entry_reference": null,
+   "bank_transaction_code": {
+    "code": "CARD"
+   },
+   "_cuenta": "EUR 000001"
+  },
+  {
+   "booking_date": "2026-09-03",
+   "value_date": "2026-09-03",
+   "credit_debit_indicator": "DBIT",
+   "transaction_amount": {
+    "amount": "2.10",
+    "currency": "EUR"
+   },
+   "remittance_information": [
+    "COMPRA TARJ. 5402XXXXXXXX1234 CAFETERIA LUNA-VALENCIA"
+   ],
+   "status": "BOOK",
+   "creditor": null,
+   "debtor": null,
+   "entry_reference": null,
+   "bank_transaction_code": {
+    "code": "CARD"
+   },
+   "_cuenta": "EUR 000001"
+  },
+  {
+   "booking_date": "2026-09-03",
+   "value_date": "2026-09-03",
+   "credit_debit_indicator": "DBIT",
+   "transaction_amount": {
+    "amount": "2.10",
+    "currency": "EUR"
+   },
+   "remittance_information": [
+    "COMPRA TARJ. 5402XXXXXXXX1234 CAFETERIA LUNA-VALENCIA"
+   ],
+   "status": "BOOK",
+   "creditor": null,
+   "debtor": null,
+   "entry_reference": null,
+   "bank_transaction_code": {
+    "code": "CARD"
+   },
+   "_cuenta": "EUR 000001"
+  },
+  {
+   "booking_date": "2026-09-05",
+   "value_date": "2026-09-05",
+   "credit_debit_indicator": "CRDT",
+   "transaction_amount": {
+    "amount": "1500.00",
+    "currency": "EUR"
+   },
+   "remittance_information": [
+    "ABONO TRANSFERENCIA DE ACME CONSULTING S.L."
+   ],
+   "status": "BOOK",
+   "creditor": null,
+   "debtor": null,
+   "entry_reference": null,
+   "bank_transaction_code": {
+    "code": "TRANSFER"
+   },
+   "_cuenta": "EUR 000001"
+  },
+  {
+   "booking_date": "2026-09-07",
+   "value_date": "2026-09-07",
+   "credit_debit_indicator": "DBIT",
+   "transaction_amount": {
+    "amount": "12.00",
+    "currency": "EUR"
+   },
+   "remittance_information": [
+    "COMPRA TARJ. 5402XXXXXXXX1234 KIOSCO SOL-VALENCIA"
+   ],
+   "status": "PDNG",
+   "creditor": null,
+   "debtor": null,
+   "entry_reference": null,
+   "bank_transaction_code": {
+    "code": "CARD"
+   },
+   "_cuenta": "EUR 000001"
+  },
+  {
+   "booking_date": "2026-09-08",
+   "value_date": "2026-09-08",
+   "credit_debit_indicator": "DBIT",
+   "transaction_amount": {
+    "amount": "60.00",
+    "currency": "EUR"
+   },
+   "remittance_information": [
+    "REINTEGRO CAJERO 1234 VALENCIA"
+   ],
+   "status": "BOOK",
+   "creditor": null,
+   "debtor": null,
+   "entry_reference": null,
+   "bank_transaction_code": {
+    "code": "TRANSFER"
+   },
+   "_cuenta": "EUR 000001"
+  },
+  {
+   "booking_date": "2026-09-10",
+   "value_date": "2026-09-10",
+   "credit_debit_indicator": "DBIT",
+   "transaction_amount": {
+    "amount": "35.00",
+    "currency": "EUR"
+   },
+   "remittance_information": [
+    "COMPRA TARJ. 5402XXXXXXXX1234 GIMNASIO CENTRO-VALENCIA"
+   ],
+   "status": "PDNG",
+   "creditor": null,
+   "debtor": null,
+   "entry_reference": null,
+   "bank_transaction_code": {
+    "code": "CARD"
+   },
+   "_cuenta": "EUR 000001"
+  },
+  {
+   "booking_date": "2026-09-11",
+   "value_date": "2026-09-11",
+   "credit_debit_indicator": "DBIT",
+   "transaction_amount": {
+    "amount": "1.50",
+    "currency": "EUR"
+   },
+   "remittance_information": [
+    "COMISION MANTENIMIENTO"
+   ],
+   "status": "BOOK",
+   "creditor": null,
+   "debtor": null,
+   "entry_reference": null,
+   "bank_transaction_code": {
+    "code": "TRANSFER"
+   },
+   "_cuenta": "EUR 000001"
+  }
+ ]
+}

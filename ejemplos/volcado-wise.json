@@ -1,0 +1,74 @@
+{
+ "perfil": "demo-wise",
+ "fuente": "Wise Demo",
+ "desde": "2026-09-01",
+ "bajado": "2026-09-11T09:00:00",
+ "saldos": {
+  "EUR 000001": 285.2
+ },
+ "transacciones": [
+  {
+   "booking_date": "2026-09-04",
+   "value_date": "2026-09-04",
+   "credit_debit_indicator": "DBIT",
+   "transaction_amount": {
+    "amount": "14.80",
+    "currency": "EUR"
+   },
+   "remittance_information": [
+    "Card transaction of 12.50 GBP issued by PRET A MANGER LONDON"
+   ],
+   "status": "BOOK",
+   "creditor": null,
+   "debtor": null,
+   "entry_reference": "TX-1001",
+   "bank_transaction_code": {
+    "code": "CARD"
+   },
+   "_cuenta": "EUR 000001",
+   "reference_number": "CARD-1"
+  },
+  {
+   "booking_date": "2026-09-06",
+   "value_date": "2026-09-06",
+   "credit_debit_indicator": "CRDT",
+   "transaction_amount": {
+    "amount": "300.00",
+    "currency": "EUR"
+   },
+   "remittance_information": [
+    "Received money from Juan Ejemplo"
+   ],
+   "status": "BOOK",
+   "creditor": null,
+   "debtor": {
+    "name": "Juan Ejemplo"
+   },
+   "entry_reference": "TX-1002",
+   "bank_transaction_code": {
+    "code": "TRANSFER"
+   },
+   "_cuenta": "EUR 000001"
+  },
+  {
+   "booking_date": "2026-09-06",
+   "value_date": "2026-09-06",
+   "credit_debit_indicator": "DBIT",
+   "transaction_amount": {
+    "amount": "0.45",
+    "currency": "EUR"
+   },
+   "remittance_information": [
+    "Wise Charges for: TX-1002"
+   ],
+   "status": "BOOK",
+   "creditor": null,
+   "debtor": null,
+   "entry_reference": "TX-1003",
+   "bank_transaction_code": {
+    "code": "TRANSFER"
+   },
+   "_cuenta": "EUR 000001"
+  }
+ ]
+}

@@ -1,0 +1,14 @@
+# Perfiles del ejemplo (datos inventados). Los usa scripts/probar.py.
+perfiles:
+  demo-banco:
+    banco: Banco Demo
+    pais: ES
+    fuente: Banco Demo
+    id: hash
+    concepto_solo: true
+  demo-wise:
+    banco: Wise
+    pais: BE
+    fuente: Wise Demo
+    id: nativo
+    concepto_solo: false

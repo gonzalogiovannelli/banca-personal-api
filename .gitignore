@@ -1,0 +1,8 @@
+# Credenciales y datos financieros: nunca a git
+secretos/
+datos/
+config/perfiles.yml
+.env
+
+__pycache__/
+*.pyc
