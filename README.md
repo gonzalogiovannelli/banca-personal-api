@@ -37,7 +37,9 @@ tu banco ──pull──> datos/volcados/<perfil>.json ──rebuild──> dat
 0. **Tu copia, privada.** Usá el botón *Use this template* de GitHub y elegí **Private**. No hagas fork:
    el fork de un repositorio público es público, y ahí terminarían tus reglas (los comercios y las
    personas a las que les pagás).
-1. **Python 3.10 o más nuevo**, y `pip install -r requirements.txt`.
+1. **Python 3.10 o más nuevo**, y `pip install -r requirements.txt`. Activá también los hooks de git,
+   que exigen el prefijo de cada commit y suben la versión (ver [Versión](#versión)):
+   `git config core.hooksPath .githooks`.
 2. **Da de alta tu aplicación en Enable Banking** siguiendo el
    [instructivo paso a paso](docs/enable-banking.md). Para leer tus propias cuentas alcanza con el modo
    restringido, y el instructivo trae las páginas legales que pide el registro, listas para publicar.
@@ -85,6 +87,7 @@ Si cargás un movimiento a mano (un pago en efectivo, un ajuste), su `id` tiene 
 | Carpeta | Qué hay | ¿Va a git? |
 |---|---|---|
 | `src/` | El código | Sí |
+| `.githooks/` | Los hooks que exigen el prefijo de cada commit y suben la versión | Sí |
 | `docs/` | El instructivo de Enable Banking y lo aprendido con bancos reales | Sí |
 | `legal/` | Plantillas de privacidad y términos para el registro en Enable Banking | Sí |
 | `reglas/` | Tus categorías, reglas y correcciones | Sí, si tu copia es privada |
@@ -94,6 +97,20 @@ Si cargás un movimiento a mano (un pago en efectivo, un ajuste), su `id` tiene 
 
 Por eso tu copia tiene que ser **privada** (paso 0): los nombres de los comercios y de las personas a
 las que les transferís dicen mucho de vos.
+
+## Versión
+
+El repo tiene versión (`VERSION`, `CHANGELOG.md` y una etiqueta `vX.Y.Z` por versión), y sube sola
+con cada commit según su prefijo, siguiendo [Conventional Commits](https://www.conventionalcommits.org/)
+y [SemVer](https://semver.org/):
+
+- `chore:` datos (reglas, correcciones, categorías). No sube la versión
+- `fix:` un ajuste a algo que ya existe. Sube el último número
+- `feat:` algo nuevo (un banco, un comando, una skill). Sube el del medio
+- `!` detrás del tipo (`feat!:`) si cambia cómo se usa el repo. Sube el primero
+
+El hook `commit-msg` rechaza el commit que no lleve prefijo, y `post-commit` sube la versión.
+Lo anterior al 2026-10-14 se reconstruyó del historial.
 
 ## Licencia
 

@@ -17,6 +17,9 @@ guarda los movimientos en `datos/movimientos.csv` y los categoriza. Leé el READ
   tiene que revisar.
 - **Si cambiás `src/`, corré `python scripts/probar.py`.** Y si agregás un comportamiento, agregale su
   comprobación, y rompelo a propósito para ver que la comprobación salta.
+- **Cada commit empieza con su tipo:** `chore:` datos, `fix:` un ajuste, `feat:` algo nuevo, y `!`
+  detrás del tipo si cambia cómo se usa el repo. La versión sube sola y el hook `commit-msg` rechaza el
+  commit sin prefijo. Ver la sección Versión del README.
 - **Un banco nuevo con otro formato de concepto** se resuelve en `src/conceptos.py`, con un caso en el
   ejemplo.
 

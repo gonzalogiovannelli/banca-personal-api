@@ -1,0 +1,5 @@
+#!/bin/sh
+# Sube VERSION, escribe el CHANGELOG y pone la etiqueta según el prefijo del commit.
+# Ver .githooks/version.js.
+command -v node >/dev/null 2>&1 || { echo "post-commit: no hay node, la version no sube."; exit 0; }
+node "$(git rev-parse --show-toplevel)/.githooks/version.js" post-commit

@@ -1,0 +1,5 @@
+#!/bin/sh
+# Rechaza un commit cuyo mensaje no lleve prefijo de tipo (feat, fix, chore).
+# Ver .githooks/version.js.
+command -v node >/dev/null 2>&1 || { echo "commit-msg: no hay node, me salto el prefijo."; exit 0; }
+node "$(git rev-parse --show-toplevel)/.githooks/version.js" commit-msg "$1"

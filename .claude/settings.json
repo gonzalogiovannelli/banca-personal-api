@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ \"$(git config core.hooksPath)\" = \".githooks\" ] || echo '{\"systemMessage\":\"AVISO: los hooks de git no estan activos en esta maquina, asi que la version no sube. Se activan con: git config core.hooksPath .githooks\",\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":\"core.hooksPath no apunta a .githooks: los commits no suben la version. Mencionalo en una linea al empezar y pregunta si se activa con git config core.hooksPath .githooks.\"}}'"
+          }
+        ]
+      }
+    ]
+  }
+}
